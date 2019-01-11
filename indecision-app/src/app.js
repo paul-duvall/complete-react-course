@@ -2,16 +2,22 @@
 // Note that the uppercase first letter of the class name is enforced with React components
 // This is the main component; all the other components are nested within this
 class IndecisionApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      options: ['Thing one', 'Thing two', 'Thing four']
+    };
+  }
   render() {
     const title = 'Indecision';
     const subtitle = 'Put your life in the hands of a computer';
-    const options = ['Thing one', 'Thing two', 'Thing four'];
 
     return (
       <div>
         <Header title={title} subtitle={subtitle} />
-        <Action />
-        <Options options={options} />
+        {/* hasOptions is a boolean value based upon whether there are any items in the options array */}
+        <Action hasOptions={this.state.options.length > 0}/>
+        <Options options={this.state.options} />
         <AddOption />
       </div>
     );
@@ -36,20 +42,30 @@ class Action extends React.Component {
   render() {
     return (
       <div>
-      <button onClick={this.handlePick}>What should I do?</button>
+      <button 
+        onClick={this.handlePick}
+        disabled={!this.props.hasOptions}
+      >
+        What should I do?
+      </button>
       </div>
     );
   }
 }
 
 class Options extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleRemoveAll = this.handleRemoveAll.bind(this);
+  }
   handleRemoveAll() {
-    alert('Remove all clicked');
+    console.log(this.props.options);
+    // alert('Remove all clicked');
   }
   render() {
     return (
       <div>
-        <button onClick={this.handleRemoveAll}>Remove all</button>  
+        <button onClick={this.handleRemoveAll.bind(this)}>Remove all</button>  
         {
           // Generate instance of Option component for each option in the options array
           this.props.options.map((option) => <Option key={option} optionText={option}/>)
