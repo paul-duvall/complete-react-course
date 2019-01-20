@@ -1,17 +1,29 @@
 import React from 'react';
 import Option from './Option';
 
-const Options = (props) => {
-  return (
+const Options = (props) => (
     <div>
-      <button onClick={props.handleDeleteOptions}>Remove all</button>  
-      {props.options.length === 0 && <p>Please add an options to get started!</p>}
+      <div className="widget-header">
+        <h3 className="widget-header__title">Your Options</h3>
+        <button 
+        className="button button--link"  
+        onClick={props.handleDeleteOptions}
+        >
+        Remove all</button>  
+      </div>
+      {props.options.length === 0 && <p className="widget__message">Please add an options to get started!</p>}
       {
         // Generate instance of Option component for each option in the options array
-        props.options.map((option) => <Option key={option} optionText={option} handleDeleteOption={props.handleDeleteOption}/>)
+        props.options.map((option, index) => (
+            <Option 
+              key={option} 
+              optionText={option} 
+              count={index + 1}
+              handleDeleteOption={props.handleDeleteOption}
+            />
+          ))
       }
     </div>
   );
-};
 
 export default Options;
